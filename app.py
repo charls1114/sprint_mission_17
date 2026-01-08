@@ -41,10 +41,13 @@ with st.sidebar:
         if uploaded_images is None:
             uploaded_images = []
         uploaded_images.append(cam_image)
+
+    # 세션 상태 초기화 / 이미지 추가하는 경우
     if st.session_state.get("uploaded_images") is None or len(
         st.session_state["uploaded_images"]
     ) < len(uploaded_images):
         st.session_state["uploaded_images"] = uploaded_images
+    # 이미지 제거하는 경우
     else:
         for img in st.session_state["uploaded_images"]:
             if img not in uploaded_images:
@@ -59,6 +62,7 @@ if len(uploaded_images) > 0:
 
         st.button(
             f"{uploaded_image.name} 분류 시작",
+            # 여러 장의 이미지 업로드 시 각 버튼의 boolean 상태 유지를 위해 session_state 추가
             on_click=lambda i=idx: st.session_state.update(
                 {f"classified_{uploaded_image.name}": True}
             ),
